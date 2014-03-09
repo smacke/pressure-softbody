@@ -22,4 +22,4 @@ pain in the arse.
 License
 =======
 
-Code is BSD licensed.
+Code is released under the FreeBSD / simplified BSD license.
