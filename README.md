@@ -12,6 +12,13 @@ not by much.  Still, it is nice in that it's self-contained for anybody looking
 for a terrible example of Java multithreading to manually update AWT
 components.
 
+TODO
+====
+
+Java 7 and/or current browsers don't like self-signed certs. I need to add a
+cert from some trusted CA when signing. This is at the very least an enormous
+pain in the arse.
+
 License
 =======
 
