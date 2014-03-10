@@ -2,7 +2,8 @@
 ===================================
 
 An implementation of Maciej Matyka's soft body
-[tutorial paper](https://www.eclipse.org/m2e/). Although Java Java is not ideal
+[tutorial paper](http://panoramix.ift.uni.wroc.pl/~maq/soft2d/howtosoftbody.pdf).
+Although Java Java is not ideal
 performance-wise for this sort of thing, it has the benefit that it is readily
 [demo](http://smacke.net/pressure-softbody/softbody.html)able straight from the web.
 
