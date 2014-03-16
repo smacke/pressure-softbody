@@ -48,7 +48,7 @@ int    NUM_SPRINGS    = NUM_POINTS;
 
 int    LENGTH         = 75;
 
-int    WIDTH          = 500;
+int    WIDTH          = 1200;
 int    HEIGHT         = 500;
 float  RADIUS         = 190.0;
 float  R2             = pow(RADIUS,2);
@@ -407,20 +407,20 @@ void integrateHeun() {
 		}
 
 
-		if (myPoints.y[i] > 3.*HEIGHT/4.) { // need these checks to avoid setting to wrong sign
+		if (myPoints.y[i] > HEIGHT/2. + RADIUS/2.) { // need these checks to avoid setting to wrong sign
 			myPoints.y[i] = min(myPoints.y[i],  sqrt(abs(R2 - pow(myPoints.x[i] - WIDTH/2., 2))) + HEIGHT/2.);
 		}
 		
 
-		if (myPoints.y[i] < HEIGHT/4.) {
+		if (myPoints.y[i] < HEIGHT/2. - RADIUS/2.) {
 			myPoints.y[i] = max(myPoints.y[i], -sqrt(abs(R2 - pow(myPoints.x[i] - WIDTH/2., 2))) + HEIGHT/2.);
 		}
 
-		if (myPoints.x[i] > 3.*WIDTH/4) {
+		if (myPoints.x[i] > WIDTH/2. + RADIUS/2.) {
 			myPoints.x[i] = min(myPoints.x[i],  sqrt(abs(R2 - pow(myPoints.y[i] - HEIGHT/2., 2))) + WIDTH/2.);
 		}
 
-		if (myPoints.x[i] < WIDTH/4.) {
+		if (myPoints.x[i] < WIDTH/2. - RADIUS/2.) {
 			myPoints.x[i] = max(myPoints.x[i], -sqrt(abs(R2 - pow(myPoints.y[i] - HEIGHT/2., 2))) + WIDTH/2.);
 		}
 
