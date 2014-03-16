@@ -48,8 +48,10 @@ int    NUM_SPRINGS    = NUM_POINTS;
 
 int    LENGTH         = 75;
 
-int    PAGE_WIDTH     = 380;       //380 by default
-int    PAGE_HEIGHT    = 380;       //380 by default
+int    WIDTH          = 500;
+int    HEIGHT         = 500;
+float  RADIUS         = 190.0;
+float  R2             = pow(RADIUS,2);
 
 float MASS           = 1.0;
 float BALL_RADIUS    = 0.516;    //0.516 by default
@@ -97,7 +99,7 @@ boolean mouseP = false;
  * Also, set things up for an animation. 
  **************************************************/	 
 void setup() {
-	size(PAGE_WIDTH, PAGE_HEIGHT);
+	size(WIDTH, HEIGHT);
  	frameRate(60);
 
 	myPoints = new Points(NUM_POINTS);
@@ -112,7 +114,7 @@ void draw() {
 	background(255);
 
 	stroke(0);
-	ellipse(189, 189, 380, 380);
+	ellipse(WIDTH/2, HEIGHT/2, 2*RADIUS, 2*RADIUS);
 
 	fill(#FF0000);  //pure red
 	noStroke();
@@ -192,8 +194,8 @@ void addSpring(int i, int j, int k) {
  **************************************************/
 void createBall() {
 	for (int i = 0; i < NUM_POINTS; i++) {
-		myPoints.x[i] = BALL_RADIUS * cos(i * 2 * PI / NUM_POINTS) + 190;
-		myPoints.y[i] = BALL_RADIUS * sin(i * 2 * PI / NUM_POINTS) + 95;
+		myPoints.x[i] = BALL_RADIUS * cos(i * 2 * PI / NUM_POINTS) + WIDTH/2;
+		myPoints.y[i] = BALL_RADIUS * sin(i * 2 * PI / NUM_POINTS) + HEIGHT/4;
 	}
 
 
@@ -379,17 +381,15 @@ void integrateHeun() {
 		 * From here, the rest of the method is devoted to
 		 * boundary checking.
 		 **************************************************/
-		if (myPoints.x[i] > 380)
-			myPoints.x[i] = 380;
-		if (myPoints.y[i] < 0)
-			myPoints.y[i] = 0;
-		if (myPoints.x[i] < 0)
-			myPoints.x[i] = 0;
-		if (myPoints.y[i] > 380)
-			myPoints.y[i] = 380;
+	
+		myPoints.x[i] = min(myPoints.x[i], WIDTH/2. + RADIUS);
+		myPoints.x[i] = max(myPoints.x[i], WIDTH/2. - RADIUS);
 
-		if (myPoints.x[i] + drx >  sqrt(36100 - pow(myPoints.y[i] - 190, 2)) + 190 || 
-			myPoints.x[i] + drx < -sqrt(36100 - pow(myPoints.y[i] - 190, 2)) + 190)
+		myPoints.y[i] = min(myPoints.y[i], HEIGHT/2. + RADIUS);
+		myPoints.y[i] = max(myPoints.y[i], HEIGHT/2. - RADIUS);
+
+		if (myPoints.x[i] + drx >  sqrt(R2 - pow(myPoints.y[i] - HEIGHT/2., 2)) + WIDTH/2. || 
+			myPoints.x[i] + drx < -sqrt(R2 - pow(myPoints.y[i] - HEIGHT/2., 2)) + WIDTH/2.)
 		{
 			drx *= -1;                           //These are temporary until I do
 			dry *= -1;                           //the math to get more exact values.
@@ -397,8 +397,8 @@ void integrateHeun() {
 			float vx0 = myPoints.vx[i];
 			float vy0 = myPoints.vy[i];
 
-			float sinTheta = (myPoints.y[i] - 190.0) / 190.0;
-			float cosTheta = (myPoints.x[i] - 190.0) / 190.0;
+			float sinTheta = (myPoints.y[i] - HEIGHT/2.) / RADIUS;
+			float cosTheta = (myPoints.x[i] - WIDTH/2.) / RADIUS;
 
 			myPoints.vx[i] = -vx0;
 			myPoints.vy[i] = -vy0;
@@ -406,15 +406,23 @@ void integrateHeun() {
 			myPoints.vy[i] = vy0 * (TDF * cosTheta * cosTheta - NDF * sinTheta * sinTheta) + vx0 * (-TDF * sinTheta * cosTheta - NDF * sinTheta * cosTheta);
 		}
 
-		if ((myPoints.y[i] > 250 || myPoints.y[i] < 130) && myPoints.y[i] > sqrt(36100 - pow(myPoints.x[i] - 190, 2)) + 190)
-			myPoints.y[i] = sqrt(abs(36100 - pow(myPoints.x[i] - 190, 2))) + 190;
-		if ((myPoints.y[i] > 250 || myPoints.y[i] < 130) && myPoints.y[i] < -sqrt(36100 - pow(myPoints.x[i] - 190, 2)) + 190)
-			myPoints.y[i] = -sqrt(abs(36100 - pow(myPoints.x[i] - 190, 2))) + 190;
 
-		if ((myPoints.x[i] > 250 || myPoints.x[i] < 130) && myPoints.x[i] > sqrt(36100 - pow(myPoints.y[i] - 190, 2)) + 190)
-			myPoints.x[i] = sqrt(abs(36100 - pow(myPoints.y[i] - 190, 2))) + 190;
-		if ((myPoints.y[i] > 250 || myPoints.x[i] < 130) && myPoints.x[i] < -sqrt(36100 - pow(myPoints.y[i] - 190, 2)) + 190)
-			myPoints.x[i] = -sqrt(abs(36100 - pow(myPoints.y[i] - 190, 2))) + 190;
+		if (myPoints.y[i] > 3.*HEIGHT/4.) { // need these checks to avoid setting to wrong sign
+			myPoints.y[i] = min(myPoints.y[i],  sqrt(abs(R2 - pow(myPoints.x[i] - WIDTH/2., 2))) + HEIGHT/2.);
+		}
+		
+
+		if (myPoints.y[i] < HEIGHT/4.) {
+			myPoints.y[i] = max(myPoints.y[i], -sqrt(abs(R2 - pow(myPoints.x[i] - WIDTH/2., 2))) + HEIGHT/2.);
+		}
+
+		if (myPoints.x[i] > 3.*WIDTH/4) {
+			myPoints.x[i] = min(myPoints.x[i],  sqrt(abs(R2 - pow(myPoints.y[i] - HEIGHT/2., 2))) + WIDTH/2.);
+		}
+
+		if (myPoints.x[i] < WIDTH/4.) {
+			myPoints.x[i] = max(myPoints.x[i], -sqrt(abs(R2 - pow(myPoints.y[i] - HEIGHT/2., 2))) + WIDTH/2.);
+		}
 
 	}
 }
@@ -431,7 +439,7 @@ public void idle() {
 	integrateHeun();
 
 	if (pressure < FINAL_PRESSURE) {
-		pressure += FINAL_PRESSURE / 300;
+		pressure += FINAL_PRESSURE / 300.;
 	}
 }
 
