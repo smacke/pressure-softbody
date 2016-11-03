@@ -1,5 +1,5 @@
-2D Pressurized Soft Body Simulation
-===================================
+[2D Pressurized Soft Body Simulation](http://smacke.net/pressure-softbody/)
+===========================================================================
 
 An implementation of Maciej Matyka's soft body
 [tutorial paper](http://panoramix.ift.uni.wroc.pl/~maq/soft2d/howtosoftbody.pdf).
