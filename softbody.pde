@@ -48,8 +48,8 @@ int    NUM_SPRINGS    = NUM_POINTS;
 
 int    LENGTH         = 75;
 
-int    WIDTH          = 1200;
-int    HEIGHT         = 500;
+int    WIDTH          = 400;
+int    HEIGHT         = 400;
 float  RADIUS         = 190.0;
 float  R2             = pow(RADIUS,2);
 
