@@ -48,9 +48,9 @@ int    NUM_SPRINGS    = NUM_POINTS;
 
 int    LENGTH         = 75;
 
-int    WIDTH          = 400;
-int    HEIGHT         = 400;
-float  RADIUS         = 190.0;
+int    WIDTH          = (int)(0.95*window.innerWidth);
+int    HEIGHT         = (int)(0.9*window.innerHeight);
+float  RADIUS         = min(190.0, WIDTH/2-1);
 float  R2             = pow(RADIUS,2);
 
 float MASS           = 1.0;
@@ -195,7 +195,7 @@ void addSpring(int i, int j, int k) {
 void createBall() {
 	for (int i = 0; i < NUM_POINTS; i++) {
 		myPoints.x[i] = BALL_RADIUS * cos(i * 2 * PI / NUM_POINTS) + WIDTH/2;
-		myPoints.y[i] = BALL_RADIUS * sin(i * 2 * PI / NUM_POINTS) + HEIGHT/4;
+		myPoints.y[i] = BALL_RADIUS * sin(i * 2 * PI / NUM_POINTS) + HEIGHT/2;
 	}
 
 
