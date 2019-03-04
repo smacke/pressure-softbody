@@ -58,10 +58,13 @@ float BALL_RADIUS    = 0.516;    //0.516 by default
 
 //Spring constants
 float KS             = 755.0;    //755 by default
-float KD             = 35.0;        //35.0 by default
+float KD             = 35.0;     //35.0 by default
 
 //Gravity force and user applied force
-float GY             = 110.0;     //110.0 by default
+float G_MAGNITUDE    = 110.0;    //110.0 by default
+float GY             = G_MAGNITUDE;
+float GX             = 0.0;
+
 float FAPP           = 110.0;
 
 //Time interval for numeric integration
@@ -106,6 +109,11 @@ void setup() {
 	mySprings = new Springs(NUM_SPRINGS);
 
 	createBall();
+}
+
+void handleOrientation(float gamma) {
+  GY = G_MAGNITUDE * cos(gamma / 180. * PI);
+  GX = G_MAGNITUDE * sin(gamma / 180. * PI);
 }
 
 
@@ -226,8 +234,8 @@ void accumulateForces() {
 	 * force.
 	 **************************************************/
 	for (int i = 0; i < NUM_POINTS; i++) {
-		myPoints.fx[i] = 0;
-		myPoints.fy[i] = (pressure - FINAL_PRESSURE) >= 0 ? GY*MASS : 0;
+		myPoints.fx[i] = (pressure >= FINAL_PRESSURE) ? GX*MASS : 0;
+		myPoints.fy[i] = (pressure >= FINAL_PRESSURE) ? GY*MASS : 0;
 
 		if(upArrow)
 			myPoints.fy[i] = -FAPP*MASS;
@@ -483,4 +491,3 @@ class Springs {
 		ny = new float[n_springs];
 	}
 }
-
