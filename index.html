@@ -12,12 +12,27 @@
 
 <hr />
 <div align="center">
-<canvas data-processing-sources="softbody.pde"></canvas>
+<canvas id="softbody" data-processing-sources="softbody.pde"></canvas>
 </div>
 <hr />
 
 Try the mouse and arrow keys! <br />
 <a href="https://github.com/smacke/pressure-softbody">The source.</a>
+
+<script>
+function registerOrientationListener() {
+  var processingInstance = null;
+  processingInstance = Processing.getInstanceById('softbody');
+  if (processingInstance === undefined || processingInstance === null) {
+    setTimeout(registerOrientationListener, 100);
+    return;
+  }
+  window.addEventListener('deviceorientation', function(event) {
+    processingInstance.handleOrientation(event.gamma);
+  });
+}
+document.addEventListener('DOMContentLoaded', registerOrientationListener);
+</script>
 
 <script>
 window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
