@@ -7,13 +7,11 @@ Here is what it looks like:
 
 ![](softbody.gif)
 
-Note: The original code was written in Java while I was in high school
-and is included for the sake of completeness.
-Back then I didn't know what I was doing (nor do I now), which is the reason for the single source
-file, default package, magic numbers, and generally awful code. I cleaned it up a little since then, but
-not by much.  Still, it is nice in that it's self-contained for anybody looking
-for a terrible example of Java multithreading to manually update AWT components.
-
+Note: The original code was written in Java while I was in high school and is
+included for the sake of completeness.  Back then I didn't know what I was
+doing (nor do I now), which is the reason for the single source file, default
+package, magic numbers, and generally awful code. The processing port (which is
+what runs in the browser if you click the link above) is marginally cleaner.
 
 License
 =======
